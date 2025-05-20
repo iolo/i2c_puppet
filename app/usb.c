@@ -2,7 +2,7 @@
 
 #include "backlight.h"
 #include "keyboard.h"
-#include "touchpad.h"
+/*@@#include "touchpad.h"*/
 #include "reg.h"
 
 #include <hardware/irq.h>
@@ -61,6 +61,12 @@ static void key_cb(char key, enum key_state state)
 		conv_table[KEY_JOY_DOWN][1]		= HID_KEY_ARROW_DOWN;
 		conv_table[KEY_JOY_LEFT][1]		= HID_KEY_ARROW_LEFT;
 		conv_table[KEY_JOY_RIGHT][1]	= HID_KEY_ARROW_RIGHT;
+//@@iolo
+		conv_table[0x08][1]				= HID_KEY_BACKSPACE;
+		conv_table[KEY_BTN_LEFT1][1]	= HID_KEY_ESCAPE;
+		conv_table[KEY_BTN_LEFT2][1]	= HID_KEY_TAB;
+		conv_table[KEY_BTN_RIGHT1][1]	= HID_KEY_F12;
+//@@
 
 		uint8_t keycode[6] = { 0 };
 		uint8_t modifier   = 0;
@@ -94,6 +100,7 @@ static void key_cb(char key, enum key_state state)
 }
 static struct key_callback key_callback = { .func = key_cb };
 
+/*@@
 static void touch_cb(int8_t x, int8_t y)
 {
 	if (!tud_hid_n_ready(USB_ITF_MOUSE) || !reg_is_bit_set(REG_ID_CF2, CF2_USB_MOUSE_ON))
@@ -103,7 +110,9 @@ static void touch_cb(int8_t x, int8_t y)
 
 	tud_hid_n_mouse_report(USB_ITF_MOUSE, 0, self.mouse_btn, x, y, 0, 0);
 }
+
 static struct touch_callback touch_callback = { .func = touch_cb };
+*/
 
 uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen)
 {
@@ -157,7 +166,7 @@ void usb_init(void)
 
 	keyboard_add_key_callback(&key_callback);
 
-	touchpad_add_touch_callback(&touch_callback);
+	/*@@touchpad_add_touch_callback(&touch_callback);*/
 
 	// create a new interrupt that calls tud_task, and trigger that interrupt from a timer
 	irq_set_exclusive_handler(USB_LOW_PRIORITY_IRQ, low_priority_worker_irq);

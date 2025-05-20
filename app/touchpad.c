@@ -85,7 +85,7 @@ void touchpad_gpio_irq(uint gpio, uint32_t events)
 		x = ((x < 127) ? x : (x - 256)) * -1;
 		y = ((y < 127) ? y : (y - 256));
 
-		if (keyboard_is_mod_on(KEY_MOD_ID_ALT)) {
+		/*@@if (keyboard_is_mod_on(KEY_MOD_ID_ALT)) {@@*/
 			if (to_ms_since_boot(get_absolute_time()) - self.last_swipe_time > SWIPE_COOLDOWN_TIME_MS) {
 				char key = '\0';
 				if (MOTION_IS_SWIPE(y, x)) {
@@ -103,6 +103,7 @@ void touchpad_gpio_irq(uint gpio, uint32_t events)
 					self.last_swipe_time = to_ms_since_boot(get_absolute_time());
 				}
 			}
+      /*@@
 		} else {
 			if (self.callbacks) {
 				struct touch_callback *cb = self.callbacks;
@@ -114,6 +115,7 @@ void touchpad_gpio_irq(uint gpio, uint32_t events)
 				}
 			}
 		}
+    @@*/
 	}
 }
 
